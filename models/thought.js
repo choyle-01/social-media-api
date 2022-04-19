@@ -1,29 +1,46 @@
 const { Schema, model } = require('mongoose');
 
-const courseSchema = new Schema(
+const reactionSchema = new Schema(
   {
-    courseName: {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(), 
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280,
+    },
+    username: {
       type: String,
       required: true,
     },
-    inPerson: {
-      type: Boolean,
-      default: true,
-    },
-    startDate: {
+    createdAt: {
       type: Date,
-      default: Date.now(),
+      default: Date.now
+
     },
-    endDate: {
+  }
+)
+
+const thoughtsSchema = new Schema(
+  {
+    thoughtText: {
+      type: String,
+      required: true,
+      maxlength: 280,
+    },
+    createdAt: {
       type: Date,
-      default: () => new Date(+new Date() + 84 * 24 * 60 * 60 * 1000),
+      default: Date.now,
+
     },
-    students: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Student',
-      },
-    ],
+    username: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true
+    },
+    reactions: [reactionSchema]
   },
   {
     toJSON: {
@@ -33,6 +50,6 @@ const courseSchema = new Schema(
   }
 );
 
-const Course = model('course', courseSchema);
+const Thoughts = model('Thoughts', thoughtsSchema);
 
-module.exports = Course;
+module.exports = Thoughts;
