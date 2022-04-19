@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 const reactionSchema = new Schema(
   {
@@ -17,11 +17,15 @@ const reactionSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now
-
+      default: Date.now,
     },
+  },
+  {
+    toJSON: {
+      getters: true
+    }
   }
-)
+);
 
 const thoughtsSchema = new Schema(
   {
@@ -33,23 +37,22 @@ const thoughtsSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-
     },
     username: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-      required: true
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
     reactions: [reactionSchema]
   },
   {
     toJSON: {
-      virtuals: true,
-    },
-    id: false,
+      getters: true,
+    }
   }
 );
 
-const Thoughts = model('Thoughts', thoughtsSchema);
+const Thoughts = model('thoughts', thoughtsSchema);
 
 module.exports = Thoughts;
