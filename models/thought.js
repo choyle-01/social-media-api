@@ -1,4 +1,5 @@
 const { Schema, model, Types } = require('mongoose');
+const dateFormat = (date) => new Date(date).toLocaleString();
 
 const reactionSchema = new Schema(
   {
@@ -18,12 +19,14 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: timestamp => dateFormat(timestamp)
     },
   },
   {
     toJSON: {
       getters: true
-    }
+    },
+    id: false
   }
 );
 
@@ -37,6 +40,7 @@ const thoughtsSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: timestamp => dateFormat(timestamp)
     },
     username: {
       type: String,
@@ -49,7 +53,8 @@ const thoughtsSchema = new Schema(
   {
     toJSON: {
       getters: true,
-    }
+    },
+    id: false
   }
 );
 
